@@ -1,49 +1,23 @@
 <?php
-  $db_host = 'localhost';
-  $db_user = 'root';
-  $db_password = '';
-  $db_db = 'biblioteca-laciba';
+include "./services/connection.php";
 
-  $mysqli = new mysqli(
-    $db_host,
-    $db_user,
-    $db_password,
-    $db_db
-  );
-	
-  if ($mysqli->connect_error) {
-    echo 'Errno: '.$mysqli->connect_errno;
-    echo '<br>';
-    echo 'Error: '.$mysqli->connect_error;
-    exit();
-  }
-
-  echo 'Success: A proper connection to MySQL was made.';
-  echo '<br>';
-  echo 'Host information: '.$mysqli->host_info;
-  echo '<br>';
-  echo 'Protocol version: '.$mysqli->protocol_version;
-
-
-
-$sql = "SELECT * FROM libros";
+$sql = "SELECT * FROM worksofart";
 
 $result = $mysqli->query($sql);
 
-$mysqli->close();
 
 include 'connect_test_db.php';
 $searchErr = '';
-$book_details='';
-if(isset($_POST['save']))
+$art_details='';
+if(isset($_POST['search']))
 {
     if(!empty($_POST['search']))
     {
         $search = $_POST['search'];
-        $stmt = $con->prepare("select * from libros where titol like '%$search%' or autoria like '%$search%' or ISBN like '%$search%'");
+        $stmt = $con->prepare("SELECT * from worksofart WHERE name like '%$search%' or artist like '%$search%'");
         $stmt->execute();
-        $book_details = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        //print_r($book_details);
+        $art_details = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        //print_r($art_details);
         
     }
     else
@@ -52,6 +26,9 @@ if(isset($_POST['save']))
     }
     
 }
+
+
+$mysqli->close();
 ?>    
 
 <!doctype html>
@@ -62,103 +39,94 @@ if(isset($_POST['save']))
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.98.0">
-    <title>Album example · Bootstrap v5.2</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-    
-
-    <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-      }
-
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
-
-      .b-example-divider {
-        height: 3rem;
-        background-color: rgba(0, 0, 0, .1);
-        border: solid rgba(0, 0, 0, .15);
-        border-width: 1px 0;
-        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-      }
-
-      .b-example-vr {
-        flex-shrink: 0;
-        width: 1.5rem;
-        height: 100vh;
-      }
-
-      .bi {
-        vertical-align: -.125em;
-        fill: currentColor;
-      }
-
-      .nav-scroller {
-        position: relative;
-        z-index: 2;
-        height: 2.75rem;
-        overflow-y: hidden;
-      }
-
-      .nav-scroller .nav {
-        display: flex;
-        flex-wrap: nowrap;
-        padding-bottom: 1rem;
-        margin-top: -1px;
-        overflow-x: auto;
-        text-align: center;
-        white-space: nowrap;
-        -webkit-overflow-scrolling: touch;
-      }
-
-      .item-list {
-        list-style:none;
-      }
-    </style>
-
+    <title>PHP Library</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     
   </head>
+
   <body>
+    
+<header>
+<nav class="flex items-center justify-between flex-wrap bg-[#f34a47] p-6">
+  <div class="flex items-center flex-shrink-0 text-white mr-6">
+    <a href="./">
+    <span class="font-semibold text-xl tracking-tight">Women in Art</span>
+    </a>
+  </div>
+  <div class="block lg:hidden">
+    <button class="flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white">
+      <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
+    </button>
+  </div>
+  <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+    <div class="text-sm lg:flex-grow">
+      <a href="#responsive-header" class="block mt-4 lg:inline-block lg:mt-0 text-[#fddfe1] hover:text-white mr-4">
+        Artistas
+      </a>
+      <a href="#responsive-header" class="block mt-4 lg:inline-block lg:mt-0 text-[#fddfe1] hover:text-white mr-4">
+        Obras
+      </a>
+      <a href="#responsive-header" class="block mt-4 lg:inline-block lg:mt-0 text-[#fddfe1] hover:text-white">
+        Contacto
+      </a>
+    </div>
+  </div>
+  <div class="relative rounded-2xl bg-white px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:px-10">
+    <div class="mx-auto max-w-md">
 
 
-    <h3 class= "text-center"><u>Search Result</u></h3><br/>
-  
-        <tbody>
+      <form action="search.php" method="post" class="relative mx-auto w-max">
+        <input type="search" 
+              class="peer cursor-pointer relative z-10 h-10 w-12 rounded-full border bg-transparent pl-12 outline-none focus:w-full focus:cursor-text focus:border-[#3829a6] focus:pl-16 focus:pr-4"
+              name= "search"/>
+        <svg xmlns="http://www.w3.org/2000/svg" class="absolute inset-y-0 my-auto h-8 w-12 border-r border-transparent stroke-gray-500 px-3.5 peer-focus:border-[#3829a6] peer-focus:stroke-[#3829a6]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+      </form>
+
+
+    </div>
+  </div>
+</nav>
+</header>
+
+  <body>
                 <?php
-                 if(!$book_details)
+                 if(!$art_details)
                  {
                     echo '<tr>No data found</tr>';
                  }
                  else{
-                    foreach($book_details as $key=>$value)
+                    foreach($art_details as $key=>$value)
                     {
                         ?>
-                        <div class="px-4 py-5 my-5 text-center">
-                        <img class="d-block mx-auto mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
-                        <h1 class="display-5 fw-bold"><?php echo $value['titol'];?></h1>
-                        <div class="col-lg-6 mx-auto">
-                        <ul class="lead mb-4 item-list">
-                            <li><?php echo $value['autoria'];?></li>
-                            <li><?php echo $value['ISBN'];?></li>
-                            <li><?php echo $value['descriptors'];?></li>
-                        </ul>
-                        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-    
+                        
+                        <div class="min-w-screen min-h-screen bg-[#eae9f7] p-5 lg:p-10 overflow-hidden relative">
+                        <div class="w-full max-w-6xl rounded bg-white shadow-xl p-10 lg:p-20 mx-auto text-gray-800 relative md:text-left">
+                            <div class="md:flex items-center -mx-10">
+                                <div class="w-full md:w-1/2 px-10 mb-10 md:mb-0">
+                                    <div class="relative">
+                                        <img src=<?php echo $value['img']?> class="w-full relative z-10" alt="">
+                                    </div>
+                                </div>
+                                <div class="w-full md:w-1/2 px-10">
+                                    <div class="mb-10">
+                                        <h1 class="font-bold uppercase text-2xl mb-5"><?php echo $value['name'];?></h1>
+                                        <h2 class="font-bold uppercase text-1xl mb-5"><?php echo $value['artist'];?></h2>
+                                        <p class="text-sm"><?php echo $value['year'];?></p>
+                                        <p class="text-sm"><?php echo $value['location'];?></p>
+                                        <p class="text-sm"><?php echo $value['technique'];?></p>
+                                        <p class="text-sm"><?php echo $value['description'];?></p>
+                                    </div>
+                                    <div>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+                               
                         <?php
                     }
                      
                  }
                 ?>
-             
-         </tbody>
-      </table>
-    </div>
-<script src="jquery-3.2.1.min.js"></script>
-<script src="bootstrap.min.js"></script>
+          

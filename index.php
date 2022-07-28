@@ -1,57 +1,11 @@
 <?php
-  $db_host = 'localhost';
-  $db_user = 'root';
-  $db_password = '';
-  $db_db = 'biblioteca-laciba';
+ include './services/connection.php';
 
-  $mysqli = new mysqli(
-    $db_host,
-    $db_user,
-    $db_password,
-    $db_db
-  );
-	
-  if ($mysqli->connect_error) {
-    echo 'Errno: '.$mysqli->connect_errno;
-    echo '<br>';
-    echo 'Error: '.$mysqli->connect_error;
-    exit();
-  }
-
-  echo 'Success: A proper connection to MySQL was made.';
-  echo '<br>';
-  echo 'Host information: '.$mysqli->host_info;
-  echo '<br>';
-  echo 'Protocol version: '.$mysqli->protocol_version;
-
-
-
-$sql = "SELECT * FROM libros";
+$sql = "SELECT * FROM worksOfArt";
 
 $result = $mysqli->query($sql);
 
 $mysqli->close();
-
-include 'connect_test_db.php';
-$searchErr = '';
-$book_details='';
-if(isset($_POST['save']))
-{
-    if(!empty($_POST['search']))
-    {
-        $search = $_POST['search'];
-        $stmt = $con->prepare("select * from libros where titol like '%$search%' or autoria like '%$search%' or ISBN like '%$search%'");
-        $stmt->execute();
-        $book_details = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        //print_r($book_details);
-        
-    }
-    else
-    {
-        $searchErr = "Please enter the information";
-    }
-    
-}
 
 ?>
 
@@ -65,104 +19,104 @@ if(isset($_POST['save']))
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.98.0">
-    <title>Album example · Bootstrap v5.2</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <title>Women in Art</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     
-
-    <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-      }
-
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
-
-      .b-example-divider {
-        height: 3rem;
-        background-color: rgba(0, 0, 0, .1);
-        border: solid rgba(0, 0, 0, .15);
-        border-width: 1px 0;
-        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-      }
-
-      .b-example-vr {
-        flex-shrink: 0;
-        width: 1.5rem;
-        height: 100vh;
-      }
-
-      .bi {
-        vertical-align: -.125em;
-        fill: currentColor;
-      }
-
-      .nav-scroller {
-        position: relative;
-        z-index: 2;
-        height: 2.75rem;
-        overflow-y: hidden;
-      }
-
-      .nav-scroller .nav {
-        display: flex;
-        flex-wrap: nowrap;
-        padding-bottom: 1rem;
-        margin-top: -1px;
-        overflow-x: auto;
-        text-align: center;
-        white-space: nowrap;
-        -webkit-overflow-scrolling: touch;
-      }
-
-      .item-list {
-        list-style:none;
-      }
-    </style>
-
     
   </head>
   <body>
     
     
 <header>
-  <div class="collapse bg-dark" id="navbarHeader">
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-8 col-md-7 py-4">
-          <h4 class="text-white">About</h4>
-          <p class="text-muted">Add some information about the album below, the author, or any other background context. Make it a few sentences long so folks can pick up some informative tidbits. Then, link them off to some social networking sites or contact information.</p>
-        </div>
-        <div class="col-sm-4 offset-md-1 py-4">
-          <h4 class="text-white">Contact</h4>
-          <ul class="list-unstyled">
-            <li><a href="#" class="text-white">Follow on Twitter</a></li>
-            <li><a href="#" class="text-white">Like on Facebook</a></li>
-            <li><a href="#" class="text-white">Email me</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="navbar navbar-dark bg-dark shadow-sm">
-    <div class="container">
-      <a href="#" class="navbar-brand d-flex align-items-center">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true" class="me-2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-        <strong>Libros</strong>
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-    </div>
-  </div>
 
-  <div class="container">
+ 
+<nav class="flex items-center justify-between flex-wrap bg-[#f34a47] p-6">
+  <div class="flex items-center flex-shrink-0 text-white mr-6">
+    <span class="font-semibold text-3xl tracking-tight">Women in Art</span>
+  </div>
+  <div class="block lg:hidden">
+    <button class="flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white">
+      <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
+    </button>
+  </div>
+  <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+    <div class="text-sm lg:flex-grow">
+      <a href="#responsive-header" class="block mt-4 lg:inline-block lg:mt-0 text-[#fddfe1] hover:text-white mr-4">
+        Artists
+      </a>
+      <a href="create.php" class="block mt-4 lg:inline-block lg:mt-0 text-[#fddfe1] hover:text-white mr-4">
+        Upload Artpiece
+      </a>
+      <a href="#responsive-header" class="block mt-4 lg:inline-block lg:mt-0 text-[#fddfe1] hover:text-white">
+        Contact
+      </a>
+    </div>
+  </div>
+  <div class="relative rounded-2xl bg-white px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 sm:mx-auto sm:max-w-lg sm:px-10">
+    <div class="mx-auto max-w-md">
+
+
+      <form action="search.php" method="post" class="relative mx-auto w-max">
+        <input type="text" 
+              name = "search"
+              class="peer cursor-pointer relative z-10 h-10 w-12 rounded-full border bg-transparent pl-12 outline-none focus:w-full focus:cursor-text focus:border-[#3829a6] focus:pl-16 focus:pr-4"/>
+        <svg xmlns="http://www.w3.org/2000/svg" class="absolute inset-y-0 my-auto h-8 w-12 border-r border-transparent stroke-gray-500 px-3.5 peer-focus:border-[#3829a6] peer-focus:stroke-[#3829a6]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+      </form>
+
+
+    </div>
+  </div>
+</nav>
+
+</header>
+
+<main>
+
+
+<section class="text-gray-600 body-font">
+        <div class="container px-5 py-24 mx-auto">
+          <div class="flex flex-wrap -m-4">
+<?php while($row = $result->fetch_assoc()){ ?>
+          <div class="p-4 md:w-1/3">
+                        <div class="h-full rounded-xl shadow-cla-blue bg-gradient-to-r from-[#fddfe1] to-[#eae9f7] overflow-hidden">
+                          <img class="lg:h-48 md:h-36 w-full object-cover object-center scale-110 transition-all duration-400 hover:scale-100" src=<?php echo $row['img'] ?> alt="Work of art">
+                          <div class="p-6">
+                            <h2 class="tracking-widest text-xs title-font font-medium text-gray-400 mb-1"><?php echo $row['artist'] ?></h2>
+                            <h1 class="title-font text-lg font-medium text-gray-600 mb-3"><?php echo $row['name'] ?></h1>
+                            <p class="leading-relaxed mb-3"><?php echo $row['year'] ?></p>
+                            <p class="leading-relaxed mb-3"><?php echo $row['location'] ?></p>
+                            <div class="flex items-center flex-wrap ">
+                            <a class="flex items-center flex-wrap " href="./detail.php?id=<?php echo $row['id']?>">
+                              <button class="bg-gradient-to-r from-[#fddfe1] to-[#f34a47] hover:scale-105 drop-shadow-md  shadow-cla-blue px-4 py-1 rounded-lg">Learn more</button>
+                            </a>
+                            <a class="flex items-center flex-wrap " href="./delete.php?delete=<?php echo $row['id']?>">
+                            <button class="bg-gradient-to-r from-[#fddfe1] to-[#f34a47] hover:scale-105 drop-shadow-md  shadow-cla-blue px-4 py-1 rounded-lg">
+                                <img class= "h-6 w-6" src="./images/bin.png" alt="Delete">
+                              </button>
+                            </a>
+                            <a class="flex items-center flex-wrap " href="./edit.php?id=<?php echo $row['id']?>">
+                            <button class="bg-gradient-to-r from-[#fddfe1] to-[#f34a47] hover:scale-105 drop-shadow-md  shadow-cla-blue px-4 py-1 rounded-lg">
+                                <img class= "h-6 w-6" src="./images/editar.png" alt="Edit">
+                              </button>
+                            </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <?php }?>
+        </div>
+        </div>
+      </section>
+
+
+</main>
+
+  </body>
+</html>
+
+<!-- <div class="container">
     <br/><br/>
     <form class="form-horizontal" action="search.php" method="post">
     <div class="row">
@@ -175,56 +129,11 @@ if(isset($_POST['save']))
               <button type="submit" name="save" class="btn btn-success btn-sm">Submit</button>
             </div>
         </div>
-     
-         
     </div>
     </form>
- 
-</div>
-<script src="jquery-3.2.1.min.js"></script>
-<script src="bootstrap.min.js"></script>
-
-</header>
-
-<main>
-
-  <div class="album py-5 bg-light">
-    <div class="container">
-
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-    <?php while($row = $result->fetch_assoc()){ ?>
-        <div class="col">
-          <div class="card shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-
-            <div class="card-body">
-              <ul class="card-text"></ul>
-              <li class="item-list"><?php echo $row['titol'] ?></li>
-              <li class="item-list"><?php echo $row['autoria'] ?></li>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <a href="./book.php">
-                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                  </a>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                </div>
-                <small class="text-muted">9 mins</small>
-              </div>
+    <div class="col-sm-2 m-2">
+              <a href="./create.php">
+              <button name="create" class="btn btn-success btn-sm">Create a New book</button>
+              </a>
             </div>
-          </div>
-        </div>
-    <?php }?>
-      </div>
-    </div>
-  </div>
-
-</main>
-
-
-
-
-    <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
-
-      
-  </body>
-</html>
+</div> -->

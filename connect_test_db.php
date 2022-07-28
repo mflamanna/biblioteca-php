@@ -5,7 +5,7 @@ $password="";
  
 try
 {
-    $con=new PDO("mysql:host=$servername;dbname=biblioteca-laciba",$username,$password);
+    $con=new PDO("mysql:host=$servername;dbname=womeninart",$username,$password);
     $con->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
     //echo 'connected';
 }
